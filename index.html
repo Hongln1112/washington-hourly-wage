@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Washington Hourly Wage Calculator — Convert Salary to Hourly Rate (2026 Minimum Wage $17.13)</title>
+<meta name="description" content="Free Washington hourly wage calculator: convert annual salary to hourly rate in seconds. See if your pay meets Washington's 2026 minimum wage of $17.13/hour.">
+<meta property="og:title" content="Washington Hourly Wage Calculator — 2026">
+<meta property="og:description" content="Convert your salary to an hourly rate and compare it to Washington's minimum wage.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%92%B8%3C/text%3E%3C/svg%3E">
+<style>
+  :root{
+    --bg:#f4f7fb;
+    --card:#ffffff;
+    --ink:#1c2a3a;
+    --muted:#5b6b7b;
+    --brand:#1f6feb;
+    --brand-dark:#155ab8;
+    --good:#1a9e5c;
+    --bad:#d0453e;
+    --line:#e4eaf1;
+    --radius:16px;
+    --shadow:0 8px 28px rgba(28,42,58,.08);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    background:var(--bg);
+    color:var(--ink);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:760px;margin:0 auto;padding:32px 18px 48px;}
+  header.top{padding:6px 0 22px;}
+  header.top .brand{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:var(--muted);letter-spacing:.2px;}
+  header.top .brand span{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--good);}
+  h1{font-size:clamp(26px,4.5vw,34px);font-weight:800;letter-spacing:-.5px;line-height:1.25;margin:12px 0 10px;}
+  .sub{font-size:16px;color:var(--muted);max-width:600px;}
+
+  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:26px 24px;margin-top:26px;}
+  .tabs{display:flex;gap:6px;background:#eef3f9;padding:5px;border-radius:12px;margin-bottom:22px;}
+  .tab{flex:1;text-align:center;padding:10px 8px;font-size:14px;font-weight:600;color:var(--muted);border-radius:9px;cursor:pointer;transition:all .15s;border:none;background:transparent;}
+  .tab.active{background:#fff;color:var(--ink);box-shadow:0 2px 8px rgba(28,42,58,.08);}
+  .field{margin-bottom:18px;}
+  .field label{display:block;font-size:13px;font-weight:600;color:var(--ink);margin-bottom:6px;}
+  .field .hint{font-size:12px;color:var(--muted);font-weight:400;}
+  .input{width:100%;padding:13px 14px;font-size:16px;border:1px solid var(--line);border-radius:10px;background:#fbfcfe;color:var(--ink);outline:none;transition:border-color .15s;}
+  .input:focus{border-color:var(--brand);background:#fff;}
+  .input::placeholder{color:#aab6c2;}
+  .prefix{position:relative;}
+  .prefix .sign{position:absolute;left:14px;top:50%;transform:translateY(-50%);font-size:16px;color:var(--muted);}
+  .prefix .input{padding-left:32px;}
+
+  .btn{width:100%;padding:15px;font-size:16px;font-weight:700;color:#fff;background:var(--brand);border:none;border-radius:11px;cursor:pointer;margin-top:6px;transition:background .15s;}
+  .btn:hover{background:var(--brand-dark);}
+
+  .result{margin-top:24px;border-top:1px solid var(--line);padding-top:20px;}
+  .result.hidden{display:none;}
+  .result .big{font-size:15px;color:var(--muted);font-weight:600;}
+  .result .num{font-size:clamp(38px,8vw,48px);font-weight:800;letter-spacing:-1px;color:var(--brand);line-height:1.1;margin-top:4px;}
+  .badge{display:inline-flex;align-items:center;gap:7px;margin-top:14px;padding:9px 14px;border-radius:10px;font-size:14px;font-weight:600;}
+  .badge.good{background:#e7f7ef;color:var(--good);}
+  .badge.bad{background:#fdecea;color:var(--bad);}
+  .badge svg{flex:none;}
+  .note{font-size:13px;color:var(--muted);margin-top:12px;}
+
+  .section{margin-top:40px;}
+  .section h2{font-size:21px;font-weight:800;letter-spacing:-.3px;margin-bottom:12px;}
+  .section p{font-size:15px;color:#33455a;margin-bottom:12px;}
+  .section ul{margin:0 0 14px 20px;}
+  .section li{font-size:15px;color:#33455a;margin-bottom:8px;}
+  .callout{background:#eef5ff;border-left:4px solid var(--brand);padding:14px 16px;border-radius:10px;margin:14px 0;}
+  .callout strong{color:var(--brand-dark);}
+  .factgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:16px 0;}
+  .fact{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px;}
+  .fact .lbl{font-size:12px;color:var(--muted);font-weight:600;}
+  .fact .val{font-size:20px;font-weight:800;color:var(--ink);margin-top:4px;}
+  .disclaimer{font-size:12.5px;color:#8a99a8;margin-top:24px;line-height:1.7;}
+
+  @media (max-width:520px){
+    .card{padding:20px 16px;}
+    .wrap{padding:20px 14px 40px;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="brand"><span></span> Washington Wage Tools</div>
+    <h1>Washington Hourly Wage Calculator</h1>
+    <p class="sub">Convert your annual salary into an hourly rate — or the other way around — and instantly check it against Washington's 2026 minimum wage of <strong>$17.13/hour</strong>.</p>
+  </header>
+
+  <div class="card">
+    <div class="tabs" role="tablist">
+      <button class="tab active" id="tab-salary" role="tab">Salary → Hourly</button>
+      <button class="tab" id="tab-hourly" role="tab">Hourly → Salary</button>
+    </div>
+
+    <!-- Salary → Hourly -->
+    <form id="form-salary" onsubmit="return false;">
+      <div class="field">
+        <label for="annual">Annual salary <span class="hint">(before taxes)</span></label>
+        <div class="prefix"><span class="sign">$</span><input class="input" id="annual" type="number" inputmode="decimal" min="0" step="any" placeholder="e.g. 52000" value=""></div>
+      </div>
+      <div class="field">
+        <label for="hours">Hours per week</label>
+        <input class="input" id="hours" type="number" inputmode="decimal" min="0" step="any" placeholder="e.g. 40" value="40">
+      </div>
+      <div class="field">
+        <label for="weeks">Weeks worked per year</label>
+        <input class="input" id="weeks" type="number" inputmode="decimal" min="0" max="52" step="any" placeholder="e.g. 52" value="52">
+      </div>
+      <button class="btn" id="calc-salary">Calculate hourly rate</button>
+    </form>
+
+    <!-- Hourly → Salary -->
+    <form id="form-hourly" onsubmit="return false;" style="display:none;">
+      <div class="field">
+        <label for="rate">Hourly rate <span class="hint">(before taxes)</span></label>
+        <div class="prefix"><span class="sign">$</span><input class="input" id="rate" type="number" inputmode="decimal" min="0" step="any" placeholder="e.g. 25.00" value=""></div>
+      </div>
+      <div class="field">
+        <label for="hours2">Hours per week</label>
+        <input class="input" id="hours2" type="number" inputmode="decimal" min="0" step="any" placeholder="e.g. 40" value="40">
+      </div>
+      <div class="field">
+        <label for="weeks2">Weeks worked per year</label>
+        <input class="input" id="weeks2" type="number" inputmode="decimal" min="0" max="52" step="any" placeholder="e.g. 52" value="52">
+      </div>
+      <button class="btn" id="calc-hourly">Calculate annual salary</button>
+    </form>
+
+    <div class="result hidden" id="result">
+      <div class="big" id="result-label">Your hourly rate</div>
+      <div class="num" id="result-num">$0.00</div>
+      <div class="badge" id="result-badge"></div>
+      <div class="note" id="result-note"></div>
+    </div>
+  </div>
+
+  <!-- Content section -->
+  <section class="section">
+    <h2>How to calculate your hourly rate in Washington</h2>
+    <p>If you know your annual salary, your hourly rate is simple to work out:</p>
+    <div class="callout"><strong>Hourly rate = Annual salary ÷ (Hours per week × Weeks per year)</strong></div>
+    <p>For example, a salary of $52,000 at 40 hours per week and 52 weeks per year gives an hourly rate of about <strong>$25.00</strong>.</p>
+    <p>Use the calculator above to run your own numbers — it works both directions, so you can also see what an hourly rate adds up to across a full year.</p>
+  </section>
+
+  <section class="section">
+    <h2>Washington's minimum wage in 2026</h2>
+    <p>Washington State sets its minimum wage by law, and it is adjusted each January for inflation. These are the rates in effect for 2026:</p>
+    <div class="factgrid">
+      <div class="fact"><div class="lbl">2026 Minimum wage (16+)</div><div class="val">$17.13 / hr</div></div>
+      <div class="fact"><div class="lbl">Under 16 (85%)</div><div class="val">$14.56 / hr</div></div>
+      <div class="fact"><div class="lbl">Effective date</div><div class="val">Jan 1, 2026</div></div>
+    </div>
+    <p>If your calculated hourly rate comes in below the minimum for your situation, it's a sign your pay may not meet Washington law — though some cities like Seattle set a higher local minimum.</p>
+  </section>
+
+  <div class="disclaimer">
+    This tool estimates hourly and annual pay on a simple before-tax basis. It does not account for federal, state, or local taxes, overtime rules, deductions, or benefits. Washington minimum wage figures come from the Washington State Department of Labor &amp; Industries and apply as of January 1, 2026. This page is an informational tool, not legal or payroll advice.
+  </div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+  var MIN_WAGE = 17.13;
+  var tabSalary = document.getElementById("tab-salary");
+  var tabHourly = document.getElementById("tab-hourly");
+  var formSalary = document.getElementById("form-salary");
+  var formHourly = document.getElementById("form-hourly");
+  var result = document.getElementById("result");
+  var resultLabel = document.getElementById("result-label");
+  var resultNum = document.getElementById("result-num");
+  var resultBadge = document.getElementById("result-badge");
+
+  function fmt(n){
+    return "$" + n.toLocaleString("en-US",{minimumFractionDigits:2,maximumFractionDigits:2});
+  }
+  function badgeHtml(ok){
+    var check = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>';
+    var cross = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>';
+    if(ok) return '<span class="badge good">'+check+' Above Washington\'s 2026 minimum wage</span>';
+    return '<span class="badge bad">'+cross+' Below Washington\'s 2026 minimum wage</span>';
+  }
+
+  function switchTab(mode){
+    var isSalary = (mode === "salary");
+    tabSalary.classList.toggle("active", isSalary);
+    tabHourly.classList.toggle("active", !isSalary);
+    formSalary.style.display = isSalary ? "" : "none";
+    formHourly.style.display = isSalary ? "none" : "";
+    result.classList.add("hidden");
+  }
+
+  tabSalary.addEventListener("click", function(){ switchTab("salary"); });
+  tabHourly.addEventListener("click", function(){ switchTab("hourly"); });
+
+  function computeSalaryToHourly(){
+    var annual = parseFloat(document.getElementById("annual").value);
+    var hours = parseFloat(document.getElementById("hours").value);
+    var weeks = parseFloat(document.getElementById("weeks").value);
+    if(isNaN(annual) || annual < 0) { showError(); return; }
+    if(!hours || hours <= 0 || !weeks || weeks <= 0){ showError(); return; }
+    var rate = annual / (hours * weeks);
+    resultLabel.textContent = "Your hourly rate";
+    resultNum.textContent = fmt(rate);
+    resultBadge.innerHTML = badgeHtml(rate >= MIN_WAGE);
+    result.classList.remove("hidden");
+  }
+
+  function computeHourlyToSalary(){
+    var rate = parseFloat(document.getElementById("rate").value);
+    var hours = parseFloat(document.getElementById("hours2").value);
+    var weeks = parseFloat(document.getElementById("weeks2").value);
+    if(isNaN(rate) || rate < 0) { showError(); return; }
+    if(!hours || hours <= 0 || !weeks || weeks <= 0){ showError(); return; }
+    var annual = rate * hours * weeks;
+    resultLabel.textContent = "Your annual salary (before taxes)";
+    resultNum.textContent = fmt(annual);
+    resultBadge.innerHTML = badgeHtml(rate >= MIN_WAGE);
+    result.classList.remove("hidden");
+  }
+
+  function showError(){
+    resultLabel.textContent = "Check your numbers";
+    resultNum.textContent = "—";
+    resultBadge.innerHTML = '<span class="badge bad" style="font-weight:600;">Please enter a salary and positive hours / weeks</span>';
+    result.classList.remove("hidden");
+  }
+
+  document.getElementById("calc-salary").addEventListener("click", computeSalaryToHourly);
+  document.getElementById("calc-hourly").addEventListener("click", computeHourlyToSalary);
+
+  // Allow Enter key
+  var forms = [formSalary, formHourly];
+  forms.forEach(function(f){
+    f.addEventListener("keydown", function(e){
+      if(e.key === "Enter"){
+        e.preventDefault();
+        if(f === formSalary){ computeSalaryToHourly(); }
+        else { computeHourlyToSalary(); }
+      }
+    });
+  });
+})();
+</script>
+</body>
+</html>
