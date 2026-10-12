@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Seattle Hourly Wage Calculator — Seattle Minimum Wage 2026 ($20.76)</title>
+<meta name="description" content="Free Seattle hourly wage calculator: convert your salary to an hourly rate and compare it with Seattle's 2026 minimum wage of $20.76/hour.">
+<link rel="canonical" href="https://washington-hourly-wage.vercel.app/seattle-hourly-wage.html">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%92%B8%3C/text%3E%3C/svg%3E">
+<style>
+  :root{
+    --bg:#f4f7fb;--card:#ffffff;--ink:#1c2a3a;--muted:#5b6b7b;
+    --brand:#1f6feb;--brand-dark:#155ab8;--good:#1a9e5c;--bad:#d0453e;--line:#e4eaf1;
+    --radius:16px;--shadow:0 8px 28px rgba(28,42,58,.08);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;background:var(--bg);color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:760px;margin:0 auto;padding:32px 18px 48px;}
+  header.top{padding:6px 0 22px;}
+  header.top .brand{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:var(--muted);letter-spacing:.2px;}
+  header.top .brand span{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--good);}
+  h1{font-size:clamp(26px,4.5vw,34px);font-weight:800;letter-spacing:-.5px;line-height:1.25;margin:12px 0 10px;}
+  .sub{font-size:16px;color:var(--muted);max-width:600px;}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:26px 24px;margin-top:26px;}
+  .field{margin-bottom:18px;}
+  .field label{display:block;font-size:13px;font-weight:600;color:var(--ink);margin-bottom:6px;}
+  .field .hint{font-size:12px;color:var(--muted);font-weight:400;}
+  .input{width:100%;padding:13px 14px;font-size:16px;border:1px solid var(--line);border-radius:10px;background:#fbfcfe;color:var(--ink);outline:none;transition:border-color .15s;}
+  .input:focus{border-color:var(--brand);background:#fff;}
+  .prefix{position:relative;}
+  .prefix .sign{position:absolute;left:14px;top:50%;transform:translateY(-50%);font-size:16px;color:var(--muted);}
+  .prefix .input{padding-left:32px;}
+  .btn{width:100%;padding:15px;font-size:16px;font-weight:700;color:#fff;background:var(--brand);border:none;border-radius:11px;cursor:pointer;margin-top:6px;transition:background .15s;}
+  .btn:hover{background:var(--brand-dark);}
+  .result{margin-top:24px;border-top:1px solid var(--line);padding-top:20px;}
+  .result.hidden{display:none;}
+  .result .big{font-size:15px;color:var(--muted);font-weight:600;}
+  .result .num{font-size:clamp(36px,8vw,46px);font-weight:800;letter-spacing:-1px;line-height:1.1;margin-top:4px;}
+  .verdict{margin-top:14px;padding:13px 15px;border-radius:10px;font-size:14.5px;font-weight:600;}
+  .verdict.good{background:#e8f7ef;color:var(--good);}
+  .verdict.bad{background:#fdecea;color:var(--bad);}
+  .info h2{font-size:20px;font-weight:800;margin:28px 0 10px;}
+  .info p{font-size:15px;color:#33455a;margin-bottom:12px;}
+  .info ul{font-size:15px;color:#33455a;margin-left:22px;margin-bottom:12px;}
+  .info li{margin-bottom:8px;}
+  footer{margin-top:40px;padding-top:20px;border-top:1px solid var(--line);text-align:center;font-size:13px;color:var(--muted);}
+  footer a{color:var(--brand);text-decoration:none;margin:0 6px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="brand"><span></span> Washington Hourly Wage</div>
+    <h1>Seattle Hourly Wage Calculator</h1>
+    <p class="sub">Convert your salary to an hourly rate and compare it with Seattle's 2026 minimum wage of $20.76/hour.</p>
+  </header>
+
+  <div class="card">
+    <div class="field">
+      <label>Annual salary <span class="hint">(before taxes)</span></label>
+      <div class="prefix"><span class="sign">$</span><input class="input" id="salary" type="number" step="1" placeholder="45000"></div>
+    </div>
+    <div class="field">
+      <label>Hours worked per week <span class="hint">(usually 40)</span></label>
+      <input class="input" id="hours" type="number" step="0.5" placeholder="40" value="40">
+    </div>
+    <button class="btn" id="calc">Convert to hourly rate</button>
+
+    <div class="result hidden" id="result">
+      <div class="big">Your hourly rate</div>
+      <div class="num" id="rate">–</div>
+      <div class="verdict" id="verdict"></div>
+    </div>
+  </div>
+
+  <div class="info">
+    <h2>Seattle's 2026 minimum wage</h2>
+    <p>Seattle sets its own minimum wage that is higher than both Washington state and the federal floor. In 2026, the Seattle minimum wage is <strong>$20.76 per hour</strong> for most businesses. This rate adjusts annually based on inflation (CPI-W).</p>
+    <ul>
+      <li><strong>$20.76/hour</strong> — 2026 Seattle citywide minimum wage</li>
+      <li><strong>$17.13/hour</strong> — 2026 Washington state minimum wage (lower than Seattle's)</li>
+      <li><strong>$7.25/hour</strong> — federal minimum wage (much lower; Seattle overrides it)</li>
+    </ul>
+    <h2>How to calculate your hourly rate</h2>
+    <p>Divide your annual salary by your total hours per year. For a standard 40-hour, 52-week schedule, that's <strong>2,080 hours</strong>. For example, a $45,000 salary ÷ 2,080 = <strong>~$21.63/hour</strong>, which meets Seattle's minimum wage.</p>
+    <h2>Important notes</h2>
+    <p>Seattle's minimum wage can differ slightly by business size and whether the employer contributes toward medical benefits. Always confirm the exact rate with your employer or the Seattle Office of Labor Standards.</p>
+  </div>
+
+  <footer>
+    <a href="index.html">Home</a> ·
+    <a href="washington-overtime-calculator.html">Overtime</a> ·
+    <a href="seattle-hourly-wage.html">Seattle Wage</a> ·
+    <a href="about.html">About</a> ·
+    <a href="privacy.html">Privacy</a>
+  </footer>
+</div>
+
+<script>
+(function(){
+  "use strict";
+  var salaryEl=document.getElementById("salary"),
+      hoursEl=document.getElementById("hours"),
+      btn=document.getElementById("calc"),
+      result=document.getElementById("result"),
+      rateEl=document.getElementById("rate"),
+      verdict=document.getElementById("verdict"),
+      SEATTLE_MIN=20.76;
+  function fmt(n){return "$"+n.toFixed(2);}
+  function calc(){
+    var salary=parseFloat(salaryEl.value)||0,
+        hours=parseFloat(hoursEl.value)||40,
+        annualHours=hours*52;
+    var rate=annualHours?salary/annualHours:0;
+    rateEl.textContent=fmt(rate);
+    var diff=rate-SEATTLE_MIN;
+    if(diff>=0){
+      verdict.className="verdict good";
+      verdict.textContent="✅ Above Seattle's $"+SEATTLE_MIN.toFixed(2)+" minimum wage (by "+fmt(diff)+"/hour)";
+    }else{
+      verdict.className="verdict bad";
+      verdict.textContent="⚠️ Below Seattle's minimum wage. You are "+fmt(-diff)+"/hour under the $"+SEATTLE_MIN.toFixed(2)+" floor.";
+    }
+    result.classList.remove("hidden");
+  }
+  btn.addEventListener("click",calc);
+})();
+</script>
+</body>
+</html>
