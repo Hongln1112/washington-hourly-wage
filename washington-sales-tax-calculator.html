@@ -4,64 +4,85 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Washington Sales Tax Calculator — Calculate How Much Tax You Pay</title>
-<meta name="description" content="Free Washington sales tax calculator — find out in seconds how much extra you’ll actually pay on a purchase, including state 6.5% plus your local city and county taxes.">
+<meta name="description" content="Free Washington sales tax calculator — find out in seconds how much extra you'll actually pay on a purchase, including state 6.5% plus your local city and county taxes.">
 <link rel="canonical" href="https://washington-hourly-wage.vercel.app/washington-sales-tax-calculator.html">
 <link rel="icon" type="image/png" href="favicon.png">
 <style>
   :root{
-    --bg:#f4f7fb;--card:#ffffff;--ink:#1c2a3a;--muted:#5b6b7b;--brand:#1f6feb;--brand-dark:#155ab8;
-    --good:#1a9e5c;--bad:#d0453e;--line:#e4eaf1;--radius:16px;--shadow:0 8px 28px rgba(28,42,58,.08);
+    --bg:#f8fafc;--card:#ffffff;--ink:#0f172a;--muted:#64748b;
+    --brand:#2563eb;--brand-dark:#1d4ed8;--accent:#10b981;
+    --line:#e2e8f0;--navy:#0f1e3d;
+    --radius:14px;--shadow:0 1px 3px rgba(15,23,42,.04),0 8px 24px rgba(15,23,42,.06);
   }
   *{box-sizing:border-box;margin:0;padding:0;}
   body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;background:var(--bg);color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased;}
-  .wrap{max-width:760px;margin:0 auto;padding:32px 18px 48px;}
-  header.top{padding:6px 0 22px;}
-  header.top .brand{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:var(--muted);}
-  header.top .brand span{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--good);}
-  h1{font-size:clamp(26px,4.5vw,34px);font-weight:800;letter-spacing:-.5px;line-height:1.25;margin:12px 0 10px;}
-  .sub{font-size:16px;color:var(--muted);max-width:600px;}
-  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:26px 24px;margin-top:26px;}
+  nav{background:var(--navy);position:sticky;top:0;z-index:100;}
+  .nav-inner{max-width:1140px;margin:0 auto;padding:0 24px;height:60px;display:flex;align-items:center;justify-content:space-between;}
+  .nav-brand{color:#fff;font-weight:700;font-size:15px;letter-spacing:-.2px;text-decoration:none;display:flex;align-items:center;gap:8px;}
+  .nav-brand svg{width:22px;height:22px;}
+  .nav-links{display:flex;gap:28px;}
+  .nav-links a{color:#94a3b8;text-decoration:none;font-size:14px;font-weight:500;transition:color .15s;}
+  .nav-links a:hover{color:#fff;}
+  .wrap{max-width:900px;margin:0 auto;padding:40px 24px 64px;}
+  h1{font-size:clamp(28px,4.5vw,38px);font-weight:800;letter-spacing:-1px;line-height:1.2;margin-bottom:10px;}
+  .sub{font-size:16px;color:var(--muted);max-width:640px;margin-bottom:32px;}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:32px;margin-bottom:32px;}
   .field{margin-bottom:18px;}
   .field label{display:block;font-size:13px;font-weight:600;margin-bottom:6px;}
   .field .hint{font-size:12px;color:var(--muted);font-weight:400;}
-  .input{width:100%;padding:13px 14px;font-size:16px;border:1px solid var(--line);border-radius:10px;background:#fbfcfe;outline:none;transition:border-color .15s;}
-  .input:focus{border-color:var(--brand);background:#fff;}
+  .input{width:100%;padding:13px 14px;font-size:16px;border:1.5px solid var(--line);border-radius:10px;background:#fff;outline:none;transition:border-color .15s;font-family:inherit;}
+  .input:focus{border-color:var(--brand);}
   .prefix{position:relative;}
   .prefix .sign{position:absolute;left:14px;top:50%;transform:translateY(-50%);font-size:16px;color:var(--muted);}
   .prefix .input{padding-left:32px;}
-  .btn{width:100%;padding:15px;font-size:16px;font-weight:700;color:#fff;background:var(--brand);border:none;border-radius:11px;cursor:pointer;margin-top:6px;transition:background .15s;}
+  .btn{width:100%;padding:15px;font-size:16px;font-weight:700;color:#fff;background:var(--brand);border:none;border-radius:11px;cursor:pointer;transition:background .15s;font-family:inherit;}
   .btn:hover{background:var(--brand-dark);}
   .result{margin-top:24px;border-top:1px solid var(--line);padding-top:20px;}
   .result.hidden{display:none;}
-  .result .big{font-size:15px;color:var(--muted);font-weight:600;}
+  .result .big{font-size:14px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.5px;}
   .result .num{font-size:clamp(38px,8vw,48px);font-weight:800;letter-spacing:-1px;color:var(--brand);line-height:1.1;margin-top:4px;}
   .result-row{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--line);font-size:14px;}
   .result-row:last-child{border-bottom:none;}
   .result-row .label{color:var(--muted);}
   .result-row .val{font-weight:700;}
-  .section{margin-top:40px;}
-  .section h2{font-size:21px;font-weight:800;letter-spacing:-.3px;margin-bottom:12px;}
+  .section{margin-bottom:32px;}
+  .section h2{font-size:20px;font-weight:700;letter-spacing:-.5px;margin-bottom:12px;}
   .section p{font-size:15px;color:#33455a;margin-bottom:12px;}
-  .back{display:inline-block;margin-top:8px;font-size:13px;font-weight:600;color:var(--brand);text-decoration:none;}
-  .disclaimer{font-size:12.5px;color:#8a99a8;margin-top:24px;line-height:1.7;}
   .faq-item{background:var(--card);border:1px solid var(--line);border-radius:12px;margin-bottom:10px;overflow:hidden;}
-  .faq-q{width:100%;text-align:left;background:none;border:none;padding:16px 18px;font-size:15px;font-weight:600;color:var(--ink);cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:10px;}
-  .faq-q .chev{color:var(--brand);font-size:12px;transition:transform .2s;}
+  .faq-q{width:100%;text-align:left;background:none;border:none;padding:18px 22px;font-size:15px;font-weight:600;color:var(--ink);cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:12px;font-family:inherit;}
+  .faq-q .chev{color:var(--brand);font-size:12px;transition:transform .2s;flex-shrink:0;}
   .faq-item.open .chev{transform:rotate(180deg);}
   .faq-a{max-height:0;overflow:hidden;transition:max-height .25s ease;}
-  .faq-item.open .faq-a{max-height:400px;}
-  .faq-a p{padding:0 18px 16px;font-size:14px;color:#33455a;margin:0;}
-  @media (max-width:520px){.card{padding:20px 16px;}.wrap{padding:20px 14px 40px;}}
+  .faq-item.open .faq-a{max-height:500px;}
+  .faq-a p{padding:0 22px 18px;font-size:14px;color:#33455a;line-height:1.6;}
+  .disclaimer{font-size:12.5px;color:var(--muted);margin-top:24px;line-height:1.7;}
+  footer{border-top:1px solid var(--line);padding:32px 0;text-align:center;}
+  footer .foot-links{margin-bottom:8px;}
+  footer .foot-links a{color:var(--muted);text-decoration:none;font-size:13px;margin:0 12px;}
+  footer .copyright{font-size:12px;color:var(--muted);}
+  @media (max-width:640px){.nav-links{display:none;}.wrap{padding:24px 16px 40px;}.card{padding:24px 20px;}}
 </style>
 </head>
 <body>
+
+<nav>
+  <div class="nav-inner">
+    <a class="nav-brand" href="index.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+      WA Wage Tools
+    </a>
+    <div class="nav-links">
+      <a href="index.html">Tools</a>
+      <a href="seattle-minimum-wage-guide.html">Guide</a>
+      <a href="about.html">About</a>
+    </div>
+  </div>
+</nav>
+
 <div class="wrap">
-  <a class="back" href="index.html">← All Washington pay tools</a>
-  <header class="top">
-    <div class="brand"><span></span> Washington Hourly Wage</div>
-    <h1>Washington Sales Tax Calculator</h1>
-    <p class="sub">Estimate how much sales tax you'll pay on a purchase. Washington State has a 6.5% base rate, plus local city and county taxes.</p>
-  </header>
+
+  <h1>Washington Sales Tax Calculator</h1>
+  <p class="sub">Estimate how much sales tax you'll pay on a purchase. Washington State has a 6.5% base rate, plus local city and county taxes.</p>
 
   <div class="card">
     <div class="field">
@@ -72,7 +93,7 @@
       <label for="rate">Total sales tax rate <span class="hint">(state + local, e.g. 10.25%)</span></label>
       <input class="input" id="rate" type="number" inputmode="decimal" min="0" step="any" placeholder="e.g. 10.25" value="10.25">
     </div>
-    <button class="btn" onclick="calc()">Calculate Tax</button>
+    <button class="btn" id="calc">Calculate Tax</button>
 
     <div class="result hidden" id="result">
       <div class="big">Total price with tax</div>
@@ -85,7 +106,7 @@
     </div>
   </div>
 
-  <div class="section">
+  <section class="section">
     <h2>Washington sales tax rates by city</h2>
     <p>Washington State's base sales tax is <strong>6.5%</strong>. Local cities and counties add their own taxes, so the total you pay depends on where you shop:</p>
     <p><strong>Seattle:</strong> ~10.25%<br>
@@ -94,44 +115,58 @@
     <strong>Vancouver:</strong> ~8.4%<br>
     <strong>Bellevue:</strong> ~10.1%</p>
     <p>For the exact rate in your city, check the Washington State Department of Revenue website.</p>
-  </div>
+  </section>
 
-  <div class="section">
-    <h2>FAQ</h2>
+  <section class="section">
+    <h2>Sales tax FAQs</h2>
     <div class="faq-item">
       <button class="faq-q">Does Washington have income tax? <span class="chev">▼</span></button>
-      <div class="faq-a"><p>No. Washington is one of nine US states with no personal income tax. Instead, it relies heavily on sales tax and business taxes.</p></div>
+      <div class="faq-a"><p>No. Washington is one of nine US states with no personal income tax. Instead, it relies heavily on sales tax and business taxes. This means your paycheck goes further than in states like California or New York, but everyday purchases cost more at the register.</p></div>
     </div>
     <div class="faq-item">
       <button class="faq-q">What's exempt from sales tax in Washington? <span class="chev">▼</span></button>
-      <div class="faq-a"><p>Most groceries, prescription drugs, and some medical items are exempt. Clothing and most retail purchases are taxed at the full rate.</p></div>
+      <div class="faq-a"><p>Most groceries, prescription drugs, and some medical items are exempt. Clothing and most retail purchases are taxed at the full rate. Digital products and software are generally taxed as well.</p></div>
     </div>
     <div class="faq-item">
       <button class="faq-q">Is the online purchase tax different? <span class="chev">▼</span></button>
-      <div class="faq-a"><p>No. Since 2018, online retailers must collect Washington sales tax at the same rate as local stores, based on your shipping address.</p></div>
+      <div class="faq-a"><p>No. Since 2018, online retailers must collect Washington sales tax at the same rate as local stores, based on your shipping address. Large marketplaces like Amazon automatically calculate and collect the correct rate for your location.</p></div>
     </div>
-  </div>
+  </section>
 
   <div class="disclaimer">
     This calculator provides estimates for general guidance only. Actual sales tax rates vary by city, county, and product type. Always confirm with the Washington State Department of Revenue.
   </div>
+
 </div>
 
+<footer>
+  <div class="foot-links">
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="privacy.html">Privacy</a>
+  </div>
+  <div class="copyright">© 2026 Washington Wage Tools</div>
+</footer>
+
 <script>
-function calc(){
-  var price=parseFloat(document.getElementById('price').value)||0;
-  var rate=parseFloat(document.getElementById('rate').value)||0;
-  var tax=price*(rate/100);
-  var total=price+tax;
-  document.getElementById('result').classList.remove('hidden');
-  document.getElementById('total').textContent='$'+total.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
-  document.getElementById('r-price').textContent='$'+price.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
-  document.getElementById('r-tax').textContent='$'+tax.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
-  document.getElementById('r-rate').textContent=rate+'%';
-}
-document.querySelectorAll('.faq-q').forEach(function(q){
-  q.addEventListener('click',function(){q.parentElement.classList.toggle('open');});
-});
+(function(){
+  function calc(){
+    var price=parseFloat(document.getElementById('price').value)||0;
+    var rate=parseFloat(document.getElementById('rate').value)||0;
+    var tax=price*(rate/100);
+    var total=price+tax;
+    document.getElementById('result').classList.remove('hidden');
+    document.getElementById('total').textContent='$'+total.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+    document.getElementById('r-price').textContent='$'+price.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+    document.getElementById('r-tax').textContent='$'+tax.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+    document.getElementById('r-rate').textContent=rate+'%';
+  }
+  document.getElementById('calc').addEventListener('click',calc);
+  document.querySelectorAll('.faq-q').forEach(function(q){
+    q.addEventListener('click',function(){q.parentElement.classList.toggle('open');});
+  });
+})();
 </script>
+
 </body>
 </html>

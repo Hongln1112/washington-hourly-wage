@@ -4,56 +4,78 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Washington Overtime Calculator — Calculate Time-and-a-Half Pay (2026)</title>
-<meta name="description" content="Free Washington overtime calculator — don’t get underpaid. Add your hours and instantly see your weekly pay with time-and-a-half for overtime, using 2026 Washington rules.">
+<meta name="description" content="Free Washington overtime calculator — add your hours and instantly see your weekly pay with time-and-a-half for overtime, using 2026 Washington rules.">
 <link rel="canonical" href="https://washington-hourly-wage.vercel.app/washington-overtime-calculator.html">
 <link rel="icon" type="image/png" href="favicon.png">
 <style>
   :root{
-    --bg:#f4f7fb;--card:#ffffff;--ink:#1c2a3a;--muted:#5b6b7b;
-    --brand:#1f6feb;--brand-dark:#155ab8;--good:#1a9e5c;--line:#e4eaf1;
-    --radius:16px;--shadow:0 8px 28px rgba(28,42,58,.08);
+    --bg:#f8fafc;--card:#ffffff;--ink:#0f172a;--muted:#64748b;
+    --brand:#2563eb;--brand-dark:#1d4ed8;--accent:#10b981;
+    --line:#e2e8f0;--navy:#0f1e3d;
+    --radius:14px;--shadow:0 1px 3px rgba(15,23,42,.04),0 8px 24px rgba(15,23,42,.06);
   }
   *{box-sizing:border-box;margin:0;padding:0;}
   body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;background:var(--bg);color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased;}
-  .wrap{max-width:760px;margin:0 auto;padding:32px 18px 48px;}
-  header.top{padding:6px 0 22px;}
-  header.top .brand{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:var(--muted);letter-spacing:.2px;}
-  header.top .brand span{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--good);}
-  h1{font-size:clamp(26px,4.5vw,34px);font-weight:800;letter-spacing:-.5px;line-height:1.25;margin:12px 0 10px;}
-  .sub{font-size:16px;color:var(--muted);max-width:600px;}
-  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:26px 24px;margin-top:26px;}
+  nav{background:var(--navy);position:sticky;top:0;z-index:100;}
+  .nav-inner{max-width:1140px;margin:0 auto;padding:0 24px;height:60px;display:flex;align-items:center;justify-content:space-between;}
+  .nav-brand{color:#fff;font-weight:700;font-size:15px;letter-spacing:-.2px;text-decoration:none;display:flex;align-items:center;gap:8px;}
+  .nav-brand svg{width:22px;height:22px;}
+  .nav-links{display:flex;gap:28px;}
+  .nav-links a{color:#94a3b8;text-decoration:none;font-size:14px;font-weight:500;transition:color .15s;}
+  .nav-links a:hover{color:#fff;}
+  .wrap{max-width:900px;margin:0 auto;padding:40px 24px 64px;}
+  h1{font-size:clamp(28px,4.5vw,38px);font-weight:800;letter-spacing:-1px;line-height:1.2;margin-bottom:10px;}
+  .sub{font-size:16px;color:var(--muted);max-width:640px;margin-bottom:32px;}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:32px;margin-bottom:32px;}
   .field{margin-bottom:18px;}
-  .field label{display:block;font-size:13px;font-weight:600;color:var(--ink);margin-bottom:6px;}
+  .field label{display:block;font-size:13px;font-weight:600;margin-bottom:6px;}
   .field .hint{font-size:12px;color:var(--muted);font-weight:400;}
-  .input{width:100%;padding:13px 14px;font-size:16px;border:1px solid var(--line);border-radius:10px;background:#fbfcfe;color:var(--ink);outline:none;transition:border-color .15s;}
-  .input:focus{border-color:var(--brand);background:#fff;}
+  .input{width:100%;padding:13px 14px;font-size:16px;border:1.5px solid var(--line);border-radius:10px;background:#fff;outline:none;transition:border-color .15s;font-family:inherit;}
+  .input:focus{border-color:var(--brand);}
   .prefix{position:relative;}
   .prefix .sign{position:absolute;left:14px;top:50%;transform:translateY(-50%);font-size:16px;color:var(--muted);}
   .prefix .input{padding-left:32px;}
-  .btn{width:100%;padding:15px;font-size:16px;font-weight:700;color:#fff;background:var(--brand);border:none;border-radius:11px;cursor:pointer;margin-top:6px;transition:background .15s;}
+  .btn{width:100%;padding:15px;font-size:16px;font-weight:700;color:#fff;background:var(--brand);border:none;border-radius:11px;cursor:pointer;transition:background .15s;font-family:inherit;}
   .btn:hover{background:var(--brand-dark);}
   .result{margin-top:24px;border-top:1px solid var(--line);padding-top:20px;}
   .result.hidden{display:none;}
-  .result .big{font-size:15px;color:var(--muted);font-weight:600;}
+  .result .big{font-size:14px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.5px;}
   .result .num{font-size:clamp(36px,8vw,46px);font-weight:800;letter-spacing:-1px;color:var(--brand);line-height:1.1;margin-top:4px;}
   .breakdown{margin-top:18px;}
-  .breakdown div{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px dashed var(--line);font-size:14.5px;}
-  .breakdown div:last-child{border-bottom:none;font-weight:700;color:var(--good);font-size:16px;}
-  .info h2{font-size:20px;font-weight:800;margin:28px 0 10px;}
-  .info p{font-size:15px;color:#33455a;margin-bottom:12px;}
-  .info ul{font-size:15px;color:#33455a;margin-left:22px;margin-bottom:12px;}
-  .info li{margin-bottom:8px;}
-  footer{margin-top:40px;padding-top:20px;border-top:1px solid var(--line);text-align:center;font-size:13px;color:var(--muted);}
-  footer a{color:var(--brand);text-decoration:none;margin:0 6px;}
+  .breakdown .row{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px dashed var(--line);font-size:14.5px;}
+  .breakdown .row:last-child{border-bottom:none;font-weight:700;color:var(--accent);font-size:16px;}
+  .section{margin-bottom:32px;}
+  .section h2{font-size:20px;font-weight:700;letter-spacing:-.5px;margin-bottom:12px;}
+  .section p{font-size:15px;color:#33455a;margin-bottom:12px;}
+  .section ul{font-size:15px;color:#33455a;margin-left:22px;margin-bottom:12px;}
+  .section li{margin-bottom:8px;}
+  footer{border-top:1px solid var(--line);padding:32px 0;text-align:center;}
+  footer .foot-links{margin-bottom:8px;}
+  footer .foot-links a{color:var(--muted);text-decoration:none;font-size:13px;margin:0 12px;}
+  footer .copyright{font-size:12px;color:var(--muted);}
+  @media (max-width:640px){.nav-links{display:none;}.wrap{padding:24px 16px 40px;}.card{padding:24px 20px;}}
 </style>
 </head>
 <body>
+
+<nav>
+  <div class="nav-inner">
+    <a class="nav-brand" href="index.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+      WA Wage Tools
+    </a>
+    <div class="nav-links">
+      <a href="index.html">Tools</a>
+      <a href="seattle-minimum-wage-guide.html">Guide</a>
+      <a href="about.html">About</a>
+    </div>
+  </div>
+</nav>
+
 <div class="wrap">
-  <header class="top">
-    <div class="brand"><span></span> Washington Hourly Wage</div>
-    <h1>Washington Overtime Calculator</h1>
-    <p class="sub">Figure out your total weekly pay with overtime hours under Washington state rules. See how much time-and-a-half actually adds up.</p>
-  </header>
+
+  <h1>Washington Overtime Calculator</h1>
+  <p class="sub">Figure out your total weekly pay with overtime hours under Washington state rules. See how much time-and-a-half actually adds up.</p>
 
   <div class="card">
     <div class="field">
@@ -77,7 +99,7 @@
     </div>
   </div>
 
-  <div class="info">
+  <section class="section">
     <h2>How overtime works in Washington</h2>
     <p>Washington state follows the federal Fair Labor Standards Act (FLSA) rule: most non-exempt employees earn <strong>1.5× their regular rate (time-and-a-half)</strong> for hours worked beyond 40 in a single workweek.</p>
     <ul>
@@ -85,20 +107,28 @@
       <li><strong>Hours over 40</strong> are paid at 1.5× your regular rate.</li>
       <li>Some salaried employees and certain industries are exempt — check with your employer to confirm your status.</li>
     </ul>
-    <h2>Example</h2>
-    <p>If you earn $17.13/hour and work 45 hours in a week: your first 40 hours = $685.20, and the 5 overtime hours at 1.5× ($25.70) = $128.51. Your weekly pay ≈ $813.71.</p>
-    <h2>Is overtime pay taxable?</h2>
-    <p>Yes. Overtime earnings are treated as ordinary wages — federal, state, and FICA taxes still apply. The calculator above shows <strong>pre-tax</strong> overtime pay.</p>
-  </div>
+  </section>
 
-  <footer>
-    <a href="index.html">Home</a> ·
-    <a href="washington-overtime-calculator.html">Overtime</a> ·
-    <a href="seattle-hourly-wage.html">Seattle Wage</a> ·
-    <a href="about.html">About</a> ·
-    <a href="privacy.html">Privacy</a>
-  </footer>
+  <section class="section">
+    <h2>Example</h2>
+    <p>If you earn $17.13/hour and work 45 hours in a week: your first 40 hours = $685.20, and the 5 overtime hours at 1.5× ($25.70) = $128.51. Your weekly pay ≈ $813.71. That's about $1,000 extra per year if you do 5 overtime hours every week.</p>
+  </section>
+
+  <section class="section">
+    <h2>Is overtime pay taxable?</h2>
+    <p>Yes. Overtime earnings are treated as ordinary wages — federal, state, and FICA taxes still apply. The calculator above shows <strong>pre-tax</strong> overtime pay. After taxes, your actual take-home from overtime will be roughly 70–80% of the gross amount shown.</p>
+  </section>
+
 </div>
+
+<footer>
+  <div class="foot-links">
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="privacy.html">Privacy</a>
+  </div>
+  <div class="copyright">© 2026 Washington Wage Tools</div>
+</footer>
 
 <script>
 (function(){
@@ -125,9 +155,10 @@
       row("Total weekly pay",fmt(totalPay));
     result.classList.remove("hidden");
   }
-  function row(label,value){return "<div><span>"+label+"</span><span>"+value+"</span></div>";}
+  function row(label,value){return '<div class="row"><span>'+label+'</span><span>'+value+'</span></div>';}
   btn.addEventListener("click",calc);
 })();
 </script>
+
 </body>
 </html>
